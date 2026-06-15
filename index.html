@@ -89,7 +89,7 @@
 <div class="wrap">
   <header>
     <h1>물체의 운동 시뮬레이션</h1>
-    <div class="sub">고1 운동 단원 · 벡터로 보는 수평으로 던진 물체 · 등속원운동 · 충격량</div>
+    <div class="sub">역학적 시스템 · 벡터로 보는 수평으로 던진 물체 · 등속원운동 · 충격량</div>
   </header>
 
   <div class="tabs">
@@ -97,6 +97,8 @@
     <button class="tab" id="tabCircBtn">등속원운동</button>
     <button class="tab" id="tabImpBtn">운동량 보존</button>
     <button class="tab" id="tabAreaBtn">운동량과 충격량의 관계</button>
+    <button class="tab" id="tabImpdirBtn">충격량 방향과 운동량</button>
+    <button class="tab" id="tabFareaBtn">힘-시간 그래프와 넓이</button>
   </div>
 
   <div id="tab-proj" class="tabpanel">
@@ -371,7 +373,121 @@
   </div>
   </div>
 
-  <footer>수평으로 던진 물체: 등속도+자유낙하 → 포물선 · 등속원운동: 속력 일정·방향 변화 · 운동량 보존: 충돌 전·후 총운동량 일정 (고등학교 통합과학·물리학Ⅰ) · 단축키: <kbd>Space</kbd> 재생/정지, <kbd>R</kbd> 처음으로</footer>
+  <div id="tab-impdir" class="tabpanel" style="display:none">
+  <div class="stage">
+    <div class="leftcol">
+      <div class="canvas-card">
+        <div class="viewtag" id="jviewtag">충격량 = 운동량 변화 Δp — 운동 방향이면 증가(가속), 반대면 감소(감속)</div>
+        <canvas id="jcv" width="820" height="460"></canvas>
+      </div>
+    </div>
+    <div class="side">
+      <div class="box">
+        <h2>👉 충격량 방향</h2>
+        <div class="btnrow" style="margin-bottom:10px;">
+          <button class="primary" id="jSame">운동 방향으로 (가속)</button>
+          <button id="jOpp">반대 방향으로 (감속)</button>
+        </div>
+        <div class="ctl"><label>충격량 크기 J <span class="val" id="jJVal">2</span></label>
+          <input type="range" id="jJ" min="1" max="5" step="1" value="2"></div>
+        <div class="note" style="margin-top:4px">처음 운동량 p₀ = m·v₀ = <b>3 kg·m/s</b>(오른쪽). 충격량을 같은 방향(+)으로 주면 운동량이 늘고, 반대(−)로 주면 줄어요. 반대 충격량이 p₀보다 크면 <b>멈췄다가 반대로</b> 움직입니다.</div>
+      </div>
+      <div class="box">
+        <h2>🎬 재생</h2>
+        <div class="btnrow" style="margin-bottom:10px;">
+          <button class="primary" id="jplay">▶ 충격량 주기 / 다시</button>
+        </div>
+        <div class="ctl"><label>속도 <span class="val" id="jspeedVal">1.0×</span></label>
+          <input type="range" id="jspeed" min="0.3" max="2" step="0.1" value="1"></div>
+        <label style="display:block;margin-top:10px;font-size:13px"><input type="checkbox" id="jloop"> 자동 반복</label>
+      </div>
+      <div class="box toggles">
+        <h2>👁 표시 항목</h2>
+        <label><input type="checkbox" id="japBar" checked>운동량 막대 (p₀ + J)</label>
+        <label><input type="checkbox" id="japPush" checked>충격량 화살표</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage" style="margin-top:16px;">
+    <div class="box">
+      <h2>📊 p = p₀ + J  (충격량 = 운동량 변화)</h2>
+      <div class="data">
+        <div class="cell"><div class="k">처음 운동량 p₀</div><div class="v" id="jdP0">3 kg·m/s (→)</div></div>
+        <div class="cell"><div class="k">충격량 J (방향)</div><div class="v" id="jdJ">+2 (운동 방향)</div></div>
+        <div class="cell"><div class="k">나중 운동량 p = p₀ + J</div><div class="v" id="jdPf">5 kg·m/s</div></div>
+        <div class="cell"><div class="k">결과</div><div class="v" id="jdRes">운동량 증가 (가속)</div></div>
+      </div>
+    </div>
+    <div class="box legend">
+      <h2>🧠 핵심</h2>
+      <div class="note"><b>충격량 = 운동량 변화 (J = Δp = p − p₀).</b> 방향을 포함하는 벡터라서, 꼬리-머리로 더합니다: <b>p = p₀ + J</b>.</div>
+      <div class="note" style="margin-top:8px"><b>운동 방향으로 충격량(+):</b> 운동량이 그만큼 <b>커집니다(가속)</b>. <b>반대 방향(−):</b> 운동량이 <b>줄어듭니다(감속)</b>. 반대 충격량이 처음 운동량보다 크면 <b>0을 지나 음수</b>가 되어 방향이 뒤집힙니다.</div>
+      <div class="note" style="margin-top:8px;background:#f2f8ff;border-color:#9fc3e8">예) 공을 같은 방향으로 차면 더 빨라지고, 굴러오는 공을 막아 반대로 힘을 주면 느려지다 멈추거나 되돌아갑니다. 부호: 오른쪽 +, 왼쪽 −.</div>
+    </div>
+  </div>
+  </div>
+
+  <div id="tab-farea" class="tabpanel" style="display:none">
+  <div class="stage">
+    <div class="leftcol">
+      <div class="canvas-card">
+        <div class="viewtag" id="rviewtag">충격량 = 힘-시간 그래프 아래 넓이 — 잘게 쪼갠 막대를 이어 붙이면 곡선 아래 넓이가 됩니다</div>
+        <canvas id="rcv" width="820" height="460"></canvas>
+      </div>
+    </div>
+    <div class="side">
+      <div class="box">
+        <h2>📐 힘의 모양</h2>
+        <div class="btnrow" style="margin-bottom:8px;">
+          <button class="primary" id="rVar">변할 때</button>
+          <button id="rConst">일정할 때</button>
+        </div>
+        <div class="note" id="rmodenote">힘이 변하면 한 개의 직사각형으로는 넓이를 못 구합니다. 시간을 잘게 쪼개 보세요.</div>
+      </div>
+      <div class="box">
+        <h2>✂️ 잘게 쪼개기</h2>
+        <div class="ctl"><label>막대 개수 n <span class="val" id="rNVal">4</span></label>
+          <input type="range" id="rN" min="1" max="64" step="1" value="4"></div>
+        <div class="btnrow" style="margin-top:8px;">
+          <button class="primary" id="rAuto">▶ 점점 잘게 쪼개기</button>
+        </div>
+        <div class="note" style="margin-top:6px">슬라이더를 오른쪽으로 옮길수록 막대가 가늘어지고, 막대 윗부분이 곡선에 점점 달라붙습니다.</div>
+      </div>
+      <div class="box">
+        <h2>📏 평균 힘 = 같은 넓이 직사각형</h2>
+        <div class="btnrow"><button class="primary" id="rFlat">▶ 같은 넓이 직사각형으로 펴기</button></div>
+        <div class="note" style="margin-top:6px">곡선 아래 넓이를 <b>그대로 둔 채</b> 평평하게 펴면(튀어나온 부분이 빈 곳을 메움), 그 평평한 높이가 바로 <b>평균 힘 4 N</b>입니다. 넓이 = 평균힘 × 시간 = 16.</div>
+      </div>
+      <div class="box toggles">
+        <h2>👁 표시 항목</h2>
+        <label><input type="checkbox" id="rGap">곡선과 막대 사이 빈틈 강조</label>
+        <label><input type="checkbox" id="rAvg">평균 힘(4 N) 선 보기</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage" style="margin-top:16px;">
+    <div class="box">
+      <h2>📊 막대 넓이의 합 → 곡선 아래 넓이 (= 충격량)</h2>
+      <div class="data">
+        <div class="cell"><div class="k">막대 개수 n</div><div class="v" id="rdN">4</div></div>
+        <div class="cell"><div class="k">막대 하나의 시간 폭 Δt = (시간)/n</div><div class="v" id="rdDt">1.00 s</div></div>
+        <div class="cell"><div class="k">막대 넓이의 합 = Σ (힘 × Δt)</div><div class="v" id="rdSum">16.50 N·s</div></div>
+        <div class="cell"><div class="k">곡선 아래 참넓이 (= 충격량)</div><div class="v" id="rdTrue">16 N·s</div></div>
+      </div>
+    </div>
+    <div class="box legend">
+      <h2>🧠 핵심 — 미적분 없이 이해하기</h2>
+      <div class="note"><b>충격량 = 힘-시간 그래프 아래 넓이.</b> 힘이 <b>일정</b>하면 넓이는 그냥 직사각형 = <b>힘 × 시간</b> 입니다(한 번에 끝).</div>
+      <div class="note" style="margin-top:8px"><b>힘이 변하면</b> 한 직사각형으로 못 구합니다. 대신 <b>시간을 아주 짧게 쪼개면</b> 각 짧은 구간에서는 힘이 거의 일정 → 그 구간 넓이 ≈ <b>(그 구간 힘) × Δt</b>. 가는 막대 하나가 바로 그것입니다.</div>
+      <div class="note" style="margin-top:8px">이 가는 막대들을 <b>모두 이어 붙여 더하면</b> 곡선 아래 넓이가 됩니다. <b>더 잘게 쪼갤수록</b> 곡선과 막대 사이 <b>빈틈이 사라져</b> 참넓이와 같아집니다. (이것이 적분의 기본 생각: <b>잘게 쪼개 더하기</b>.)</div>
+      <div class="note" style="margin-top:8px;background:#f2f8ff;border-color:#9fc3e8">곡선 아래 넓이 = <b>평균 힘(4 N) × 시간(4 s) = 16 N·s</b>. 변하는 힘도 평균을 쓰면 일정한 힘과 같은 넓이가 됩니다. (막대 높이는 '그 짧은 구간 한가운데의 힘'으로 잡았습니다.)</div>
+    </div>
+  </div>
+  </div>
+
+  <footer>(영복여자고등학교 1학년 통합과학)</footer>
 </div>
 
 <script>
@@ -1231,9 +1347,339 @@
   fit(); requestAnimationFrame(loopFn);
 })();
 
+/* ===== 충격량 방향과 운동량 (가속 / 감속) ===== */
+(function(){
+  "use strict";
+  const cv=document.getElementById('jcv'), ctx=cv.getContext('2d');
+  const BLU='#2b7fd4', PUR='#7a5cc0', GRN='#2f7d49', RED='#c0392b';
+  const approachDur=1.0, impulseDur=1.3, afterDur=1.4, holdPause=1.6;
+  const TOTAL=approachDur+impulseDur+afterDur;
+  const R=17, UV=9, UI=14;
+  const m=1, v0=3, p0=m*v0;                      // 처음 운동량 3 kg·m/s
+  let dir=1, J=2, clock=0, playing=true, speed=1, loop=false, lastTs=null;
+  const show={bar:true, push:true};
+  let LW=820, LH=460;
+  const vf=()=>v0+dir*J, pf=()=>p0+dir*J;
+  const $=id=>document.getElementById(id);
+  const el={ same:$('jSame'),opp:$('jOpp'),J:$('jJ'),JVal:$('jJVal'),
+    play:$('jplay'),speed:$('jspeed'),speedVal:$('jspeedVal'),loop:$('jloop'),
+    bar:$('japBar'),push:$('japPush'),
+    dP0:$('jdP0'),dJ:$('jdJ'),dPf:$('jdPf'),dRes:$('jdRes') };
+  const lerp=(a,b,t)=>a+(b-a)*t, clamp=(x,a,b)=>x<a?a:(x>b?b:x), smooth=u=>u*u*(3-2*u);
+
+  function gtxt(s,x,y,color,size,align,bold,alpha){
+    if(alpha!==undefined){ if(alpha<=0.01)return; ctx.globalAlpha=alpha; }
+    ctx.fillStyle=color; ctx.font=(bold?'700 ':'')+(size||13)+"px 'Noto Sans KR',sans-serif";
+    ctx.textAlign=align||'left'; ctx.textBaseline='middle'; ctx.fillText(s,x,y);
+    if(alpha!==undefined) ctx.globalAlpha=1; }
+  function rr(x,y,w,h,r){ ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath(); }
+  function arrow(x,y,len,color,w){ if(Math.abs(len)<1.2)return; const x2=x+len;
+    ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=w||3;
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x2,y);ctx.stroke();
+    const d=len>=0?1:-1; ctx.beginPath();ctx.moveTo(x2,y);ctx.lineTo(x2-d*9,y-5);ctx.lineTo(x2-d*9,y+5);ctx.closePath();ctx.fill(); }
+  function ball(x,y,sx,sy,color){ const rx=R*sx, ry=R*sy;
+    const g=ctx.createRadialGradient(x-rx*0.3,y-ry*0.3,Math.min(rx,ry)*0.2,x,y,Math.max(rx,ry));
+    g.addColorStop(0,'#ffffff'); g.addColorStop(0.25,color); g.addColorStop(1,color);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(x,y,rx,ry,0,0,2*Math.PI); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,.18)'; ctx.lineWidth=1; ctx.stroke();
+    gtxt('m', x, y, '#fff', 13.5, 'center', true); }
+  function num(x){ return (x>0?'+':'')+x; }
+
+  // 운동량 막대 (수직선상 꼬리-머리 덧셈)
+  function bar(curJ){
+    const leftBar=120, barW=LW-240, sc=barW/12, zeroX=leftBar+3.4*sc, y=348;
+    // 축
+    ctx.strokeStyle='#9a937e'; ctx.lineWidth=1.6;
+    arrow(leftBar, y, barW, '#9a937e', 1.6);
+    gtxt('운동량 (오른쪽 +,  왼쪽 −)', leftBar, y-46, '#7a7565', 12, 'left', true);
+    // 0 눈금
+    ctx.strokeStyle='#c9c3b0'; ctx.lineWidth=1.4; ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(zeroX,y-30);ctx.lineTo(zeroX,y+14);ctx.stroke(); ctx.setLineDash([]);
+    gtxt('0', zeroX, y+24, '#9a937e', 11, 'center');
+    const X=p=>zeroX+p*sc;
+    // p0 (파랑)
+    ctx.strokeStyle=BLU;ctx.fillStyle=BLU;ctx.lineWidth=9;
+    ctx.beginPath();ctx.moveTo(zeroX,y);ctx.lineTo(X(p0),y);ctx.stroke();
+    gtxt('p₀ = '+p0, X(p0/2), y-16, BLU, 12, 'center', true);
+    // J (보라, 꼬리-머리)
+    if(Math.abs(curJ)>0.04){ const x1=X(p0), x2=X(p0+curJ);
+      ctx.strokeStyle=PUR;ctx.fillStyle=PUR;ctx.lineWidth=9;
+      ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2,y);ctx.stroke();
+      // 화살촉
+      const d=curJ>=0?1:-1; ctx.beginPath();ctx.moveTo(x2,y);ctx.lineTo(x2-d*9,y-6);ctx.lineTo(x2-d*9,y+6);ctx.closePath();ctx.fill();
+      gtxt('J = '+num(Math.round(curJ)), (x1+x2)/2, y+18, PUR, 12, 'center', true); }
+    // p (끝점)
+    const pCur=p0+curJ, xp=X(pCur);
+    ctx.fillStyle='#1b2330'; ctx.beginPath();ctx.arc(xp,y,6,0,2*Math.PI);ctx.fill();
+    ctx.lineWidth=2;ctx.strokeStyle='#fff';ctx.stroke();
+    gtxt('p = '+(Math.round(pCur)), xp, y-30, '#1b2330', 13, 'center', true);
+    // 식
+    gtxt('p = p₀ + J = '+p0+' + ('+num(Math.round(dir*J))+') = '+Math.round(pf()), leftBar, y+44, '#4a4636', 12.5, 'left', true);
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,LW,LH);
+    const aU=clamp(clock/approachDur,0,1);
+    const iT=clock-approachDur, iU=clamp(iT/impulseDur,0,1), e=smooth(iU);
+    const fU=clamp((clock-approachDur-impulseDur)/afterDur,0,1);
+    const done=clock>=TOTAL-1e-6;
+    const phase=clock<approachDur?'approach':(clock<approachDur+impulseDur?'impulse':'after');
+    const curJ = phase==='approach'?0 : phase==='impulse'? dir*J*e : dir*J;
+    const vCur = v0 + curJ;                       // m=1
+    const trackY=150, floorY=190, startX=70, pushX=LW*0.46;
+    // 화면 흔들림(충격 시작)
+    let sh=0; if(iT>0 && iT<0.2) sh=Math.sin(iT*95)*2*(1-iT/0.2);
+    ctx.save(); ctx.translate(sh,0);
+    // 바닥
+    ctx.strokeStyle='#d8d1bd'; ctx.lineWidth=2; ctx.beginPath();ctx.moveTo(40,floorY);ctx.lineTo(LW-40,floorY);ctx.stroke();
+    // 공 위치
+    let bx;
+    if(phase==='approach') bx=lerp(startX,pushX,aU);
+    else if(phase==='impulse') bx=pushX;
+    else bx=clamp(pushX + vCur*30*fU, 46, LW-46);
+    // 잔상
+    for(let k=5;k>=1;k--){ let gx;
+      const cc=clock-k*0.10;
+      if(cc<=0) gx=startX; else if(cc<approachDur) gx=lerp(startX,pushX,cc/approachDur);
+      else if(cc<approachDur+impulseDur) gx=pushX;
+      else gx=clamp(pushX+(v0+dir*J)*30*clamp((cc-approachDur-impulseDur)/afterDur,0,1),46,LW-46);
+      if(Math.abs(gx-bx)>=3){ ctx.globalAlpha=0.15*(1-k/6.5); ctx.fillStyle=BLU;
+        ctx.beginPath();ctx.arc(gx,trackY,R*0.8,0,2*Math.PI);ctx.fill(); ctx.globalAlpha=1; } }
+    // 찌그러짐(충격 중)
+    let sx=1,sy=1; if(phase==='impulse'){ const dd=Math.sin(Math.PI*iU)*0.18; sx=1-dd*dir*0.0+ (1-Math.abs(0))*0; sx=1-0.16*Math.sin(Math.PI*iU); sy=1+0.12*Math.sin(Math.PI*iU); }
+    // 그림자
+    ctx.fillStyle='rgba(70,60,35,.18)'; ctx.beginPath();ctx.ellipse(bx,floorY-1.5,R*0.95*sx,4.2,0,0,2*Math.PI);ctx.fill();
+    // 속도 화살표 + 라벨
+    if(Math.abs(vCur)>0.04) arrow(bx+ (vCur>0?R*sx+2:-R*sx-2), trackY, vCur*UV*1.0, '#1d6fd6', 3);
+    gtxt(Math.abs(vCur)<0.04?'정지 (v=0)':'속도 '+(vCur>0?'':'−')+Math.abs(Math.round(vCur*10)/10)+' (운동량 '+Math.round(p0+curJ)+')',
+         bx, trackY-34, Math.abs(vCur)<0.04?'#7a7565':'#1d6fd6', 11.5, 'center', true);
+    // 충격량 화살표(공 위) — 충격 중
+    if(show.push && phase==='impulse'){ const mag=J*e*UI, ax=bx, ay=trackY-58;
+      arrow(ax - dir*mag/2, ay, dir*mag, PUR, 5);
+      gtxt('충격량 J = '+num(J)+' ('+(dir>0?'운동 방향':'반대 방향')+')', ax, ay-16, PUR, 12, 'center', true);
+      // 충격 플래시
+      if(iU<0.25){ const u=iU/0.25; ctx.globalAlpha=(1-u)*0.8; ctx.strokeStyle='#ffd86b'; ctx.lineWidth=2.5*(1-u)+1;
+        ctx.beginPath();ctx.arc(bx,trackY,R+4+18*u,0,2*Math.PI);ctx.stroke(); ctx.globalAlpha=1; } }
+    // 공
+    ball(bx,trackY,sx,sy,BLU);
+    // 운동량 막대
+    if(show.bar) bar(curJ);
+    // 슬로모 배지
+    if(phase==='impulse'){ rr(LW/2-120,108,240,22,11); ctx.fillStyle='#fff6dd'; ctx.fill();
+      ctx.strokeStyle='#d6a93a'; ctx.lineWidth=1.3; ctx.stroke();
+      gtxt('⏱ 슬로모션 — 충격량을 주는 순간', LW/2, 119, '#9a6b1a', 11.5, 'center', true); }
+    // 하단 상태/결과
+    if(done){ const a=clamp((clock-(TOTAL-0.4))/0.4,0,1); const p=Math.round(pf());
+      let msg = dir>0? ('운동 방향 충격량 → 운동량 증가 (가속):  '+p0+' → '+p)
+        : (p>0? ('반대 방향 충격량 → 운동량 감소 (감속):  '+p0+' → '+p)
+        : (p===0? '반대 충격량 = 처음 운동량 → 정지 (p = 0)' : ('반대 충격량이 더 큼 → 뒤집힘:  '+p0+' → '+p+' (왼쪽으로 운동)')));
+      gtxt(msg, LW/2, LH-20, '#9a6b1a', 14, 'center', true, a); }
+    else gtxt(phase==='approach'?'운동 방향으로 이동 중… (운동량 '+p0+')':(phase==='impulse'?'충격량을 주는 중! — 슬로모션':'충격량을 받은 뒤…'),
+         LW/2, LH-20, '#8a8369', 13, 'center', true);
+    ctx.restore();
+    // 패널
+    el.dP0.textContent=p0+' kg·m/s (→)';
+    el.dJ.textContent=num(dir*J)+' ('+(dir>0?'운동 방향':'반대 방향')+')';
+    const p=Math.round(pf());
+    el.dPf.textContent=p+' kg·m/s'+(p<0?' (왼쪽 ←)':p===0?' (정지)':' (오른쪽 →)');
+    el.dRes.textContent = dir>0?'운동량 증가 (가속)':(p>0?'운동량 감소 (감속)':p===0?'정지 (p=0)':'뒤집힘 (반대로 운동)');
+  }
+  function loopFn(ts){ if(lastTs==null)lastTs=ts; const d=(ts-lastTs)/1000; lastTs=ts;
+    if(cv.offsetParent===null){ requestAnimationFrame(loopFn); return; }
+    if(playing){ clock+=d*speed;
+      if(clock>=TOTAL){ if(loop){ if(clock>=TOTAL+holdPause) clock=0; } else { clock=TOTAL; playing=false; el.play.textContent='▶ 다시 재생'; } } }
+    draw(); requestAnimationFrame(loopFn); }
+
+  function setDir(d){ dir=d; el.same.classList.toggle('primary',d>0); el.opp.classList.toggle('primary',d<0);
+    clock=0; playing=true; lastTs=null; el.play.textContent='⏸ 재생 중'; }
+  el.same.onclick=()=>setDir(1);
+  el.opp.onclick=()=>setDir(-1);
+  el.J.oninput=e=>{ J=parseInt(e.target.value,10); el.JVal.textContent=String(J); };
+  el.play.onclick=()=>{ clock=0; playing=true; lastTs=null; el.play.textContent='⏸ 재생 중'; };
+  el.speed.oninput=e=>{ speed=parseFloat(e.target.value); el.speedVal.textContent=speed.toFixed(1)+'×'; };
+  el.loop.onchange=e=>{ loop=e.target.checked; if(loop && !playing){ playing=true; el.play.textContent='⏸ 재생 중'; } };
+  el.bar.onchange=e=>show.bar=e.target.checked;
+  el.push.onchange=e=>show.push=e.target.checked;
+
+  function fit(){ let cssW=cv.parentElement.clientWidth; if(cssW<10)return;
+    const ratio=460/820, maxH=Math.max(300,(window.innerHeight||800)*0.6);
+    let cssH=cssW*ratio; if(cssH>maxH){ cssH=maxH; cssW=cssH/ratio; }
+    cv.style.width=cssW+'px';
+    const dpr=window.devicePixelRatio||1; cv.width=Math.round(cssW*dpr); cv.height=Math.round(cssH*dpr);
+    cv.style.height=cssH+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); LW=cssW; LH=cssH; }
+  window.addEventListener('resize',fit);
+  el.JVal.textContent=String(J); el.speedVal.textContent='1.0×'; el.same.classList.add('primary');
+  fit(); requestAnimationFrame(loopFn);
+})();
+
+/* ===== 힘-시간 그래프와 넓이 (구분구적·미적분 없이) ===== */
+(function(){
+  "use strict";
+  const cv=document.getElementById('rcv'), ctx=cv.getContext('2d');
+  const BLU='#2b7fd4', CURVE='#1b3a5c', PUR='#7a5cc0', RED='#c0392b';
+  const T=4, Fmax=6, TRUE=16, AVG=4;     // 포물선: 참넓이 16, 평균힘 4
+  let mode='var', n=4, showGap=false, showAvg=false;
+  let sweeping=false, sweepT=0, lastTs=null;
+  let morphP=0, morphing=false, morphDir=1; const MORPH_DUR=2.2;   // 0=곡선, 1=평평한 직사각형
+  const seq=[1,2,4,8,16,32,64], HOLD=0.85;
+  let LW=820, LH=460;
+  const $=id=>document.getElementById(id);
+  const el={ vbtn:$('rVar'),cbtn:$('rConst'),N:$('rN'),NVal:$('rNVal'),auto:$('rAuto'),
+    gap:$('rGap'),avg:$('rAvg'),mnote:$('rmodenote'),flat:$('rFlat'),
+    dN:$('rdN'),dDt:$('rdDt'),dSum:$('rdSum'),dTrue:$('rdTrue') };
+  const clamp=(x,a,b)=>x<a?a:(x>b?b:x), smooth=u=>u*u*(3-2*u);
+  const F=t=> mode==='const'? AVG : Fmax*(1-Math.pow((t-T/2)/(T/2),2));
+  const Fpar=t=> Fmax*(1-Math.pow((t-T/2)/(T/2),2));   // 변하는 힘(포물선) 고정
+
+  function gtxt(s,x,y,color,size,align,bold){ ctx.fillStyle=color;
+    ctx.font=(bold?'700 ':'')+(size||13)+"px 'Noto Sans KR',sans-serif";
+    ctx.textAlign=align||'left'; ctx.textBaseline='middle'; ctx.fillText(s,x,y); }
+  function rr(x,y,w,h,r){ ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);
+    ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath(); }
+
+  function sumOf(nn){ let s=0; const dt=T/nn;
+    for(let i=0;i<nn;i++){ s+=F((i+0.5)*dt)*dt; } return s; }
+
+  function draw(){
+    ctx.clearRect(0,0,LW,LH);
+    const PL=64, PR=LW-26, PT=66, PB=LH-78, Faxis=7;
+    const mapX=t=>PL+(t/T)*(PR-PL), mapY=v=>PB-(v/Faxis)*(PB-PT), invX=px=>(px-PL)/(PR-PL)*T;
+    const dt=T/n;
+    const aM=smooth(morphP), morphActive=morphP>0.001;
+    // 제목
+    gtxt(morphActive ? '평균 힘 = 같은 넓이의 직사각형 높이 (넓이는 16으로 그대로)'
+         : (mode==='const'?'힘이 일정할 때 — 넓이 = 힘 × 시간 (직사각형 하나)':'힘이 변할 때 — 잘게 쪼갠 막대를 이어 붙이기'),
+         LW/2, 30, '#3a3527', 15, 'center', true);
+    const Fmorph=t=> (1-aM)*Fpar(t) + aM*AVG;   // 넓이 보존: (1-a)·16 + a·16 = 16
+    if(morphActive){
+      // 같은 넓이 채우기 (곡선→평평, 넓이 항상 16)
+      ctx.fillStyle='rgba(43,127,212,.22)'; ctx.beginPath(); ctx.moveTo(mapX(0),PB);
+      for(let k=0;k<=240;k++){ const t=T*k/240; ctx.lineTo(mapX(t),mapY(Fmorph(t))); }
+      ctx.lineTo(mapX(T),PB); ctx.closePath(); ctx.fill();
+      // 평균(목표) 점선
+      const yA=mapY(AVG); ctx.strokeStyle=PUR; ctx.lineWidth=1.6; ctx.setLineDash([6,4]);
+      ctx.beginPath();ctx.moveTo(mapX(0),yA);ctx.lineTo(mapX(T),yA);ctx.stroke(); ctx.setLineDash([]);
+      // 거의 평평해지면 직사각형 강조 + 높이/넓이 라벨
+      if(aM>0.55){ const al=(aM-0.55)/0.45;
+        ctx.globalAlpha=al; ctx.strokeStyle=PUR; ctx.lineWidth=2.4;
+        ctx.strokeRect(mapX(0)+0.5, yA+0.5, mapX(T)-mapX(0)-1, PB-yA-1);
+        gtxt('평균 힘 = 4 N', (mapX(0)+mapX(T))/2, yA-12, PUR, 13.5, 'center', true);
+        gtxt('넓이 = 4 N × 4 s = 16 N·s', (mapX(0)+mapX(T))/2, (yA+PB)/2, '#3a3527', 13, 'center', true);
+        ctx.globalAlpha=1; }
+      // 변형 곡선
+      ctx.strokeStyle=CURVE; ctx.lineWidth=2.6; ctx.beginPath();
+      for(let k=0;k<=240;k++){ const t=T*k/240, x=mapX(t), y=mapY(Fmorph(t)); k?ctx.lineTo(x,y):ctx.moveTo(x,y); }
+      ctx.stroke();
+    } else {
+    // 빈틈 강조 (곡선과 막대 사이) — 막대/곡선보다 먼저 깔기
+    if(showGap){ for(let px=PL; px<=PR; px+=2){ const t=invX(px); if(t<0||t>T)continue;
+        const i=clamp(Math.floor(t/dt),0,n-1); const yRect=mapY(F((i+0.5)*dt)); const yCurve=mapY(F(t));
+        if(Math.abs(yRect-yCurve)<0.6)continue;
+        ctx.fillStyle='rgba(192,57,43,.30)'; ctx.fillRect(px, Math.min(yRect,yCurve), 2, Math.abs(yRect-yCurve)); } }
+    // 막대 (가운데값)
+    for(let i=0;i<n;i++){ const x0=mapX(i*dt), x1=mapX((i+1)*dt), Fc=F((i+0.5)*dt), yT=mapY(Fc);
+      ctx.fillStyle='rgba(43,127,212,.22)'; ctx.fillRect(x0, yT, x1-x0, PB-yT);
+      ctx.strokeStyle='rgba(43,127,212,.65)'; ctx.lineWidth=1; ctx.strokeRect(x0+0.5, yT+0.5, (x1-x0)-1, PB-yT-1); }
+    // 평균 힘 선
+    if(showAvg){ const y=mapY(AVG); ctx.strokeStyle=PUR; ctx.lineWidth=2; ctx.setLineDash([6,4]);
+      ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(PR,y);ctx.stroke(); ctx.setLineDash([]);
+      gtxt('평균 힘 4 N', PR-6, y-12, PUR, 12, 'right', true); }
+    // 곡선 (막대 위에)
+    ctx.strokeStyle=CURVE; ctx.lineWidth=2.6; ctx.beginPath();
+    for(let k=0;k<=240;k++){ const t=T*k/240, x=mapX(t), y=mapY(F(t)); k? ctx.lineTo(x,y):ctx.moveTo(x,y); }
+    ctx.stroke();
+    }
+    // 축
+    ctx.strokeStyle='#6f6a5a'; ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(PL,PB);ctx.lineTo(PR,PB);ctx.stroke();      // x축
+    ctx.beginPath();ctx.moveTo(PL,PB);ctx.lineTo(PL,PT-4);ctx.stroke();    // y축
+    ctx.beginPath();ctx.moveTo(PR,PB);ctx.lineTo(PR-7,PB-4);ctx.lineTo(PR-7,PB+4);ctx.closePath();ctx.fillStyle='#6f6a5a';ctx.fill();
+    ctx.beginPath();ctx.moveTo(PL,PT-4);ctx.lineTo(PL-4,PT+3);ctx.lineTo(PL+4,PT+3);ctx.closePath();ctx.fill();
+    // 눈금
+    ctx.fillStyle='#8a8369'; ctx.strokeStyle='#cfc8b5'; ctx.lineWidth=1;
+    for(let s=1;s<=4;s++){ const x=mapX(s); ctx.beginPath();ctx.moveTo(x,PB);ctx.lineTo(x,PB+5);ctx.stroke();
+      gtxt(String(s), x, PB+16, '#8a8369', 11, 'center'); }
+    for(let v=2;v<=6;v+=2){ const y=mapY(v); ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(PL-5,y);ctx.stroke();
+      gtxt(String(v), PL-10, y, '#8a8369', 11, 'right'); }
+    gtxt('시간 t (s)', PR-6, PB+30, '#6f6a5a', 12.5, 'right', true);
+    gtxt('힘 F (N)', PL+8, PT-2, '#6f6a5a', 12.5, 'left', true);
+    // 읽기 상자 (우상단)
+    const sum=sumOf(n);
+    const bw=224, bx=PR-bw-6, by=PT+4;
+    rr(bx,by,bw,72,8); ctx.fillStyle='rgba(255,255,255,.92)'; ctx.fill();
+    ctx.strokeStyle='#d8d1bd'; ctx.lineWidth=1; ctx.stroke();
+    if(morphActive){
+      gtxt('넓이는 변하지 않음 (보존)', bx+12, by+16, '#4a4636', 12.5, 'left', true);
+      gtxt('곡선 아래 넓이 = '+TRUE+' N·s', bx+12, by+38, BLU, 13.5, 'left', true);
+      gtxt('펴진 높이 = 평균 힘 = '+AVG+' N', bx+12, by+58, PUR, 13, 'left', true);
+    } else {
+      gtxt('막대 '+n+'개 · Δt = '+(T/n).toFixed(2)+' s', bx+12, by+16, '#4a4636', 12.5, 'left', true);
+      gtxt('막대 넓이 합 = '+sum.toFixed(2)+' N·s', bx+12, by+38, BLU, 13.5, 'left', true);
+      gtxt('곡선 아래 참넓이 = '+TRUE+' N·s', bx+12, by+58, CURVE, 13, 'left', true);
+    }
+    // 하단 안내
+    let foot;
+    if(morphActive) foot = aM>0.95
+        ? '넓이 그대로 16 = 평균 힘 4 N × 시간 4 s. 평균 힘 = 넓이 ÷ 시간 = 16 ÷ 4 = 4 N!'
+        : '넓이는 16으로 변하지 않은 채 평평해지는 중… (튀어나온 부분이 빈 곳을 메움)';
+    else if(mode==='const') foot='힘이 일정 → 막대 하나로도 정확: 넓이 = 4 N × 4 s = 16 N·s (빈틈 없음)';
+    else if(n>=32) foot='막대가 곡선에 거의 달라붙음 → 합 '+sum.toFixed(2)+' ≈ 참넓이 16. 빈틈이 거의 사라짐!';
+    else foot='지금 합 = '+sum.toFixed(2)+' (참값 16과의 차이 = '+(TRUE-sum).toFixed(2)+'). 더 잘게 쪼개 보세요 →';
+    gtxt(foot, LW/2, LH-20, '#9a6b1a', 13, 'center', true);
+    // 패널
+    if(morphActive){
+      el.dN.textContent='—'; el.dDt.textContent='—';
+      el.dSum.textContent=TRUE+' N·s (그대로)'; el.dTrue.textContent=TRUE+' N·s';
+    } else {
+      el.dN.textContent=String(n);
+      el.dDt.textContent=(T/n).toFixed(2)+' s';
+      el.dSum.textContent=sum.toFixed(2)+' N·s';
+      el.dTrue.textContent=TRUE+' N·s';
+    }
+  }
+
+  function loop(ts){ if(lastTs==null)lastTs=ts; const d=(ts-lastTs)/1000; lastTs=ts;
+    if(cv.offsetParent===null){ requestAnimationFrame(loop); return; }
+    if(sweeping){ sweepT+=d; let idx=Math.floor(sweepT/HOLD);
+      if(idx>=seq.length){ idx=seq.length-1; sweeping=false; el.auto.textContent='▶ 점점 잘게 쪼개기'; }
+      n=seq[idx]; el.N.value=String(n); el.NVal.textContent=String(n); }
+    if(morphing){ morphP=clamp(morphP+morphDir*d/MORPH_DUR,0,1);
+      if(morphDir>0 && morphP>=1){ morphing=false; el.flat.textContent='↺ 곡선으로 되돌리기'; }
+      if(morphDir<0 && morphP<=0){ morphing=false; el.flat.textContent='▶ 같은 넓이 직사각형으로 펴기'; } }
+    draw(); requestAnimationFrame(loop); }
+
+  function setMode(md){ mode=md; el.vbtn.classList.toggle('primary',md==='var'); el.cbtn.classList.toggle('primary',md==='const');
+    el.mnote.textContent = md==='const'
+      ? '힘이 일정하면 넓이는 직사각형 하나(힘×시간)로 끝납니다. 막대를 늘려도 빈틈 없이 정확합니다.'
+      : '힘이 변하면 한 개의 직사각형으로는 넓이를 못 구합니다. 시간을 잘게 쪼개 보세요.'; }
+  function resetMorph(){ morphing=false; morphP=0; el.flat.textContent='▶ 같은 넓이 직사각형으로 펴기'; }
+  el.vbtn.onclick=()=>{ resetMorph(); setMode('var'); };
+  el.cbtn.onclick=()=>{ resetMorph(); setMode('const'); };
+  el.N.oninput=e=>{ resetMorph(); sweeping=false; el.auto.textContent='▶ 점점 잘게 쪼개기'; n=parseInt(e.target.value,10); el.NVal.textContent=String(n); };
+  el.auto.onclick=()=>{ resetMorph(); if(sweeping){ sweeping=false; el.auto.textContent='▶ 점점 잘게 쪼개기'; }
+    else { sweeping=true; sweepT=0; lastTs=null; el.auto.textContent='⏸ 멈춤'; } };
+  el.flat.onclick=()=>{ sweeping=false; el.auto.textContent='▶ 점점 잘게 쪼개기';
+    if(mode!=='var') setMode('var');
+    lastTs=null; morphing=true; morphDir = (morphP<0.5)? 1 : -1;
+    el.flat.textContent = morphDir>0? '⏸ 펴는 중' : '⏸ 되돌리는 중'; };
+  el.gap.onchange=e=>showGap=e.target.checked;
+  el.avg.onchange=e=>showAvg=e.target.checked;
+
+  function fit(){ let cssW=cv.parentElement.clientWidth; if(cssW<10)return;
+    const ratio=460/820, maxH=Math.max(300,(window.innerHeight||800)*0.6);
+    let cssH=cssW*ratio; if(cssH>maxH){ cssH=maxH; cssW=cssH/ratio; }
+    cv.style.width=cssW+'px';
+    const dpr=window.devicePixelRatio||1; cv.width=Math.round(cssW*dpr); cv.height=Math.round(cssH*dpr);
+    cv.style.height=cssH+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); LW=cssW; LH=cssH; }
+  window.addEventListener('resize',fit);
+  el.vbtn.classList.add('primary'); el.NVal.textContent=String(n);
+  fit(); requestAnimationFrame(loop);
+})();
+
 /* ===== 탭 전환 ===== */
 (function(){
-  const tabs=[['tabProjBtn','tab-proj'],['tabCircBtn','tab-circ'],['tabImpBtn','tab-imp'],['tabAreaBtn','tab-area']];
+  const tabs=[['tabProjBtn','tab-proj'],['tabCircBtn','tab-circ'],['tabImpBtn','tab-imp'],['tabAreaBtn','tab-area'],['tabImpdirBtn','tab-impdir'],['tabFareaBtn','tab-farea']];
   function show(idx){
     tabs.forEach((tb,i)=>{
       document.getElementById(tb[1]).style.display = (i===idx)?'block':'none';
